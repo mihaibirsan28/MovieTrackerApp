@@ -8,5 +8,7 @@
 
 ## Database Diagram
 
+![](./Diagrams/Db.png)
+
 ## Gantt Diagram
 
