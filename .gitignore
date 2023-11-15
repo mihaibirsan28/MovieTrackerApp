@@ -6,3 +6,5 @@ secrets.py
 
 #Exclude python virtual environment
 Backend/env
+#Exclude email credetials
+email.env
