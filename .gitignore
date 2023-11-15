@@ -8,5 +8,7 @@ secrets.py
 Backend/env
 #Exclude email credetials
 email.env
-#Ingore IDE settings
+#Ignore IDE settings
 .idea
+#Ignore pycache
+__pycache__/
