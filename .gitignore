@@ -8,3 +8,5 @@ secrets.py
 Backend/env
 #Exclude email credetials
 email.env
+#Ingore IDE settings
+.idea
