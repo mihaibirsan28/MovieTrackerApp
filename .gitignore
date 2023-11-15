@@ -3,3 +3,6 @@
 .env
 # Ignore secrets.py
 secrets.py
+
+#Exclude python virtual environment
+Backend/env
