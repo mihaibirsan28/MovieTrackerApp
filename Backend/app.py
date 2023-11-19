@@ -1,12 +1,18 @@
-from fastapi import FastAPI, HTTPException, Depends, status
-from pydantic import BaseModel
-from typing import Annotated
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import models
-from database import engine, SessionLocal
-from sqlalchemy.orm import Session
-import auth
+from database.database import engine
+from endpoints.api import api_router
 
 app = FastAPI()
-app.include_router(auth.router)
-models.Base.metadata.create_all(bind=engine)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(api_router)
+models.Base.metadata.create_all(bind=engine)

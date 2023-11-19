@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from enums import LinkType
 
-from database import Base
+from database.database import Base
 
 
 class User(Base):

@@ -1,11 +1,8 @@
 from datetime import timedelta, datetime
-from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
-
+import database.deps as deps
 from display_messages import INVALID_ACCOUNT_CONFIRMATION_MESSAGE, EXPIRED_ACCOUNT_CONFIRMATION_LINK
-from display_messages import ACCOUNT_ALREADY_CONFIRMED_MESSAGE, ACCOUNT_CONFIRMED_SUCCESSFULLY_MESSAGE
-from database import SessionLocal
 from starlette import status
 from models import User, Link
 from passlib.context import CryptContext
@@ -21,28 +18,13 @@ from response_models import AuthToken
 
 from validations import validate_create_user_request
 
-router = APIRouter(
-    prefix='/auth',
-    tags=['auth']
-)
+router = APIRouter()
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/login')
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-db_dependency = Annotated[Session, Depends(get_db)]
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register_user(db: db_dependency, background_tasks: BackgroundTasks, create_user_request: CreateUserRequest):
+async def register_user(background_tasks: BackgroundTasks, create_user_request: CreateUserRequest, db: Session = Depends(deps.get_db())):
     if get_user_by_email_or_username(create_user_request.email, create_user_request.username, db):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail='Email or username already taken')
@@ -65,8 +47,8 @@ async def register_user(db: db_dependency, background_tasks: BackgroundTasks, cr
 
 
 @router.post("/login", status_code=status.HTTP_200_OK, response_model=AuthToken)
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-                db: db_dependency):
+async def login(form_data: OAuth2PasswordRequestForm = Depends(),
+                db: Session = Depends(deps.get_db())):
     user: User = login_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
@@ -80,7 +62,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 
 
 @router.post("/confirm/{link_token}", status_code=status.HTTP_200_OK)
-async def confirm_account(link_token: str, db: db_dependency, background_tasks: BackgroundTasks):
+async def confirm_account(link_token: str, background_tasks: BackgroundTasks, db: Session = Depends(deps.get_db())):
     invalid_token_exception = \
         HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                       detail=INVALID_ACCOUNT_CONFIRMATION_MESSAGE)
@@ -135,7 +117,7 @@ def login_user(username: str, password: str, db):
     return user
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)], db: db_dependency):
+async def get_current_user(token: str = Depends(deps.oauth2_bearer), db: Session = Depends(deps.get_db())):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get('sub')
@@ -146,22 +128,22 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)], db: db
                                 detail='Could not validate user.')
         current_user: User = get_user_by_email_or_username(email, username, db)
         if not current_user:
-            raise  HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                 detail='Could not validate user.')
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                detail='Could not validate user.')
         return current_user
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail='Could not validate user.')
 
 
-def get_user_by_email_or_username(email: str, username: str, db: db_dependency):
+def get_user_by_email_or_username(email: str, username: str, db: Session = Depends(deps.get_db())):
     user: User = db.query(User).filter((User.username == username) | (User.email == email)).first()
     if not user:
         return False
     return user
 
 
-def generate_account_confirmation_link(db: db_dependency, user: User):
+def generate_account_confirmation_link(user: User, db: Session = Depends(deps.get_db())):
     link_token = generate_link_token(user)
     expiry_date = datetime.utcnow() + timedelta(days=1)
     link = Link(user_id=user.id,
