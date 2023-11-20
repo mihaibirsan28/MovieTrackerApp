@@ -3,7 +3,7 @@ from database.database import SessionLocal
 from fastapi.security import OAuth2PasswordBearer
 
 
-def get_db() -> Generator:
+def get_db():
     try:
         db = SessionLocal()
         yield db

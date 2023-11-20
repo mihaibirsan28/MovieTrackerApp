@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-import auth
-import library
-import wishlist
+import endpoints.auth as auth
+import endpoints.library as library
+import endpoints.wishlist as wishlist
 
 
 api_router = APIRouter()
