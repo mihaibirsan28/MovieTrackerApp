@@ -1,0 +1,265 @@
+{
+    "page": "1",
+    "next": "/titles/search/title/Titanic?endYear=2023&startYear=1900&page=2&limit=5&exact=false&titleType=movie",
+    "entries": 5,
+    "results": [
+      {
+        "_id": "645d37cb63364b5ba3b5ba9a",
+        "id": "tt27713920",
+        "primaryImage": {
+          "id": "rm388246785",
+          "width": 1200,
+          "height": 1600,
+          "url": "https://m.media-amazon.com/images/M/MV5BZTMxYzQ5MGUtZmNmOS00NjNlLThhMTItZTAwYmM5NDQwMTFkXkEyXkFqcGdeQXVyMTYzNjY3NDMz._V1_.jpg",
+          "caption": {
+            "plainText": "Titanic (2023)",
+            "__typename": "Markdown"
+          },
+          "__typename": "Image"
+        },
+        "titleType": {
+          "displayableProperty": {
+            "value": {
+              "plainText": "",
+              "__typename": "Markdown"
+            },
+            "__typename": "DisplayableTitleTypeProperty"
+          },
+          "text": "Movie",
+          "id": "movie",
+          "isSeries": false,
+          "isEpisode": false,
+          "categories": [
+            {
+              "value": "movie",
+              "__typename": "TitleTypeCategory"
+            }
+          ],
+          "canHaveEpisodes": false,
+          "__typename": "TitleType"
+        },
+        "titleText": {
+          "text": "Titanic",
+          "__typename": "TitleText"
+        },
+        "originalTitleText": {
+          "text": "Titanic",
+          "__typename": "TitleText"
+        },
+        "releaseYear": {
+          "year": 2023,
+          "endYear": null,
+          "__typename": "YearRange"
+        },
+        "releaseDate": {
+          "day": 7,
+          "month": 2,
+          "year": 2023,
+          "__typename": "ReleaseDate"
+        }
+      },
+      {
+        "_id": "6505f841524a969c8638df5e",
+        "id": "tt29137976",
+        "primaryImage": {
+          "id": "rm1078940417",
+          "width": 999,
+          "height": 1499,
+          "url": "https://m.media-amazon.com/images/M/MV5BODBlMGJlY2EtNTQxNS00ZTU2LWE3MmUtN2E2YWU1YmQ5NjJiXkEyXkFqcGdeQXVyMTY3ODkyNDkz._V1_.jpg",
+          "caption": {
+            "plainText": "Titanic: The Musical (2023)",
+            "__typename": "Markdown"
+          },
+          "__typename": "Image"
+        },
+        "titleType": {
+          "displayableProperty": {
+            "value": {
+              "plainText": "",
+              "__typename": "Markdown"
+            },
+            "__typename": "DisplayableTitleTypeProperty"
+          },
+          "text": "Movie",
+          "id": "movie",
+          "isSeries": false,
+          "isEpisode": false,
+          "categories": [
+            {
+              "value": "movie",
+              "__typename": "TitleTypeCategory"
+            }
+          ],
+          "canHaveEpisodes": false,
+          "__typename": "TitleType"
+        },
+        "titleText": {
+          "text": "Titanic: The Musical",
+          "__typename": "TitleText"
+        },
+        "originalTitleText": {
+          "text": "Titanic: The Musical",
+          "__typename": "TitleText"
+        },
+        "releaseYear": {
+          "year": 2023,
+          "endYear": null,
+          "__typename": "YearRange"
+        },
+        "releaseDate": {
+          "day": 4,
+          "month": 11,
+          "year": 2023,
+          "__typename": "ReleaseDate"
+        }
+      },
+      {
+        "_id": "6538115bc63a9b9d9a4ab5d5",
+        "id": "tt29594383",
+        "primaryImage": null,
+        "titleType": {
+          "displayableProperty": {
+            "value": {
+              "plainText": "",
+              "__typename": "Markdown"
+            },
+            "__typename": "DisplayableTitleTypeProperty"
+          },
+          "text": "Movie",
+          "id": "movie",
+          "isSeries": false,
+          "isEpisode": false,
+          "categories": [
+            {
+              "value": "movie",
+              "__typename": "TitleTypeCategory"
+            }
+          ],
+          "canHaveEpisodes": false,
+          "__typename": "TitleType"
+        },
+        "titleText": {
+          "text": "Roblox Titanic: Reimagined",
+          "__typename": "TitleText"
+        },
+        "originalTitleText": {
+          "text": "Roblox Titanic: Reimagined",
+          "__typename": "TitleText"
+        },
+        "releaseYear": {
+          "year": 2023,
+          "endYear": null,
+          "__typename": "YearRange"
+        },
+        "releaseDate": {
+          "day": 6,
+          "month": 5,
+          "year": 2023,
+          "__typename": "ReleaseDate"
+        }
+      },
+      {
+        "_id": "62d125e85ab0d8ae5ebd9254",
+        "id": "tt21274562",
+        "primaryImage": {
+          "id": "rm2317289985",
+          "width": 2400,
+          "height": 3600,
+          "url": "https://m.media-amazon.com/images/M/MV5BYzgyMmQxODEtOGQ5ZS00ZDdiLWI1ZTctMGNlODQwNTg4NmM3XkEyXkFqcGdeQXVyNjc3NTc3NTQ@._V1_.jpg",
+          "caption": {
+            "plainText": "Titanic XXX parody (2022)",
+            "__typename": "Markdown"
+          },
+          "__typename": "Image"
+        },
+        "titleType": {
+          "text": "Movie",
+          "id": "movie",
+          "isSeries": false,
+          "isEpisode": false,
+          "categories": [
+            {
+              "value": "movie",
+              "__typename": "TitleTypeCategory"
+            }
+          ],
+          "canHaveEpisodes": false,
+          "__typename": "TitleType"
+        },
+        "titleText": {
+          "text": "Titanic XXX parody",
+          "__typename": "TitleText"
+        },
+        "originalTitleText": {
+          "text": "Titanic XXX parody",
+          "__typename": "TitleText"
+        },
+        "releaseYear": {
+          "year": 2022,
+          "endYear": null,
+          "__typename": "YearRange"
+        },
+        "releaseDate": {
+          "day": 1,
+          "month": 8,
+          "year": 2022,
+          "__typename": "ReleaseDate"
+        }
+      },
+      {
+        "_id": "64973a9890ac2a3070c92692",
+        "id": "tt28144594",
+        "primaryImage": {
+          "id": "rm3038717441",
+          "width": 700,
+          "height": 921,
+          "url": "https://m.media-amazon.com/images/M/MV5BZDZmOTE5M2MtZjdmNi00NmRmLWJhM2ItZDU0ODM1N2E5MTIwXkEyXkFqcGdeQXVyMTUwMTYxMDI4._V1_.jpg",
+          "caption": {
+            "plainText": "Titanic Secrets (2022)",
+            "__typename": "Markdown"
+          },
+          "__typename": "Image"
+        },
+        "titleType": {
+          "displayableProperty": {
+            "value": {
+              "plainText": "",
+              "__typename": "Markdown"
+            },
+            "__typename": "DisplayableTitleTypeProperty"
+          },
+          "text": "Movie",
+          "id": "movie",
+          "isSeries": false,
+          "isEpisode": false,
+          "categories": [
+            {
+              "value": "movie",
+              "__typename": "TitleTypeCategory"
+            }
+          ],
+          "canHaveEpisodes": false,
+          "__typename": "TitleType"
+        },
+        "titleText": {
+          "text": "Titanic Secrets",
+          "__typename": "TitleText"
+        },
+        "originalTitleText": {
+          "text": "Titanic Secrets",
+          "__typename": "TitleText"
+        },
+        "releaseYear": {
+          "year": 2022,
+          "endYear": null,
+          "__typename": "YearRange"
+        },
+        "releaseDate": {
+          "day": 15,
+          "month": 8,
+          "year": 2022,
+          "__typename": "ReleaseDate"
+        }
+      }
+    ]
+  }

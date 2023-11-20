@@ -5,12 +5,14 @@ import Home from './pages/Home/Home';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import MyMovies from './pages/MyMovies/MyMovies';
+import Movies from './pages/Movies/Movies';
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
         <Route exact path="/home" element={<Home/>}/>
+        <Route exact path="/movies" element={<Movies/>}/>
         <Route exact path="/myMovies" element={<MyMovies/>}/>
         {/* <Route path="/myMovies" component={MyMovies} />
         <Route path="/myWishlist" component={MyWishlist} /> */}
