@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 import database.deps as deps
 from models import Wishlist, User
 from endpoints.auth import get_current_user, get_forbidden_exception
+from utils.movie_utils import load_wish_list
 
 router = APIRouter()
 
@@ -69,12 +70,13 @@ def delete_wishlist_item(
     return wishlist_item
 
 
-@router.get("/wishlist/all")
+@router.get("/my-wishlist")
 def get_all_wishlists(
         db: Session = Depends(deps.get_db),
         current_user: User = Depends(get_current_user)):
     wishlists = db.query(Wishlist).filter(Wishlist.user_id == current_user.id).all()
-    return wishlists
+    user_wishlist = load_wish_list(movie_list=wishlists)
+    return user_wishlist
 
 
 def is_owner_of_wishlist(user: User, wishlist: Wishlist):

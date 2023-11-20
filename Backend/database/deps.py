@@ -11,4 +11,4 @@ def get_db():
         db.close()
 
 
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/login')
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl='/login')

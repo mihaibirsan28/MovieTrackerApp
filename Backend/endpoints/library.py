@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 import database.deps as deps
 from models import Library, User
 from endpoints.auth import get_current_user, get_forbidden_exception
+from utils.movie_utils import load_library
 
 router = APIRouter()
 
@@ -62,12 +63,13 @@ def delete_library_item(
     return library_item
 
 
-@router.get("/library/all")
+@router.get("/my-library")
 def get_all_libraries(
         db: Session = Depends(deps.get_db),
         current_user: User = Depends(get_current_user)):
     libraries = db.query(Library).filter(Library.user_id == current_user.id).all()
-    return libraries
+    user_library_list = load_library(movie_list=libraries)
+    return user_library_list
 
 
 def is_owner_of_library(user: User, library: Library):

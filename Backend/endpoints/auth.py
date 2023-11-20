@@ -25,7 +25,8 @@ bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register_user(background_tasks: BackgroundTasks, create_user_request: CreateUserRequest, db: Session = Depends(deps.get_db)):
+async def register_user(
+        background_tasks: BackgroundTasks, create_user_request: CreateUserRequest, db: Session = Depends(deps.get_db)):
     if get_user_by_email_or_username(create_user_request.email, create_user_request.username, db):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail='Email or username already taken')
