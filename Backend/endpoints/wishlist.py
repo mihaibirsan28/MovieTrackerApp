@@ -14,7 +14,7 @@ router = APIRouter()
 def create_wishlist_item(
         imdb_movie_id: str,
         db: Session = Depends(deps.get_db),
-        current_user: User = get_current_user):
+        current_user: User = Depends(get_current_user)):
     try:
         wishlist = Wishlist(user_id=current_user.id, imdb_movie_id=imdb_movie_id)
         db.add(wishlist)
