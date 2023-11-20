@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import models
+import logging
 from database.database import engine
 from endpoints.api import api_router
 
 app = FastAPI()
-
+logging.basicConfig(level=logging.INFO)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
