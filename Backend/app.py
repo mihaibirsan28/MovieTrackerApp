@@ -5,7 +5,7 @@ import logging
 from database.database import engine
 from endpoints.api import api_router
 
-app = FastAPI()
+app = FastAPI(debug=True)
 logging.basicConfig(level=logging.INFO)
 app.add_middleware(
     CORSMiddleware,

@@ -2,15 +2,17 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 import database.deps as deps
-from models import Library
+from models import Library, User
+from endpoints.auth import get_current_user, get_forbidden_exception
 
 router = APIRouter()
 
 
-@router.post("/library/{user_id}/{imdb_movie_id}")
-def create_library_item(user_id: int, imdb_movie_id: str, db: Session = Depends(deps.get_db)):
+@router.post("/library/{imdb_movie_id}")
+def create_library_item(
+        imdb_movie_id: str, db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
     try:
-        library = Library(user_id=user_id, imdb_movie_id=imdb_movie_id)
+        library = Library(user_id=current_user.id, imdb_movie_id=imdb_movie_id)
         db.add(library)
         db.commit()
         db.refresh(library)
@@ -20,21 +22,24 @@ def create_library_item(user_id: int, imdb_movie_id: str, db: Session = Depends(
 
 
 @router.get("/library/{library_id}")
-def read_library_item(library_id: int, db: Session = Depends(deps.get_db)):
+def read_library_item(
+        library_id: int, db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
     library_item = db.query(Library).filter(Library.id == library_id).first()
     if library_item is None:
         raise HTTPException(status_code=404, detail="Library item not found")
+    check_if_user_has_rights(user=current_user, library=library_item)
     return library_item
 
 
-@router.patch("/library/{library_id}/{user_id}/{imdb_movie_id}")
-def update_library_item(library_id: int, user_id: int, imdb_movie_id: str, db: Session = Depends(deps.get_db)):
+@router.patch("/library/{library_id}/{imdb_movie_id}")
+def update_library_item(
+        library_id: int, imdb_movie_id: str,
+        db: Session = Depends(deps.get_db),
+        current_user: User = Depends(get_current_user)):
     library_item = db.query(Library).filter(Library.id == library_id).first()
     if library_item is None:
         raise HTTPException(status_code=404, detail="Library item not found")
-
-    if user_id is not None:
-        library_item.user_id = user_id
+    check_if_user_has_rights(user=current_user, library=library_item)
     if imdb_movie_id is not None:
         library_item.imdb_movie_id = imdb_movie_id
 
@@ -44,17 +49,31 @@ def update_library_item(library_id: int, user_id: int, imdb_movie_id: str, db: S
 
 
 @router.delete("/library/{library_id}")
-def delete_library_item(library_id: int, db: Session = Depends(deps.get_db)):
+def delete_library_item(
+        library_id: int,
+        db: Session = Depends(deps.get_db),
+        current_user: User = Depends(get_current_user)):
     library_item = db.query(Library).filter(Library.id == library_id).first()
     if library_item is None:
         raise HTTPException(status_code=404, detail="Library item not found")
-
+    check_if_user_has_rights(user=current_user, library=library_item)
     db.delete(library_item)
     db.commit()
     return library_item
 
 
-@router.get("/library/all/{user_id}")
-def get_all_libraries(user_id: int, db: Session = Depends(deps.get_db)):
-    libraries = db.query(Library).filter(Library.user_id == user_id).all()
+@router.get("/library/all")
+def get_all_libraries(
+        db: Session = Depends(deps.get_db),
+        current_user: User = Depends(get_current_user)):
+    libraries = db.query(Library).filter(Library.user_id == current_user.id).all()
     return libraries
+
+
+def is_owner_of_library(user: User, library: Library):
+    return library.user_id == user.id
+
+
+def check_if_user_has_rights(user: User, library: Library):
+    if not is_owner_of_library(user, library):
+        raise get_forbidden_exception()
