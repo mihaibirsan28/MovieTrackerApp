@@ -49,7 +49,7 @@ async def register_user(
 
 
 @router.post("/login", status_code=status.HTTP_200_OK, response_model=AuthToken)
-async def login(form_data: LoginRequest,
+async def login(form_data: OAuth2PasswordRequestForm = Depends(),
                 db: Session = Depends(deps.get_db)):
     user: User = login_user(form_data.username, form_data.password, db)
     if not user:
