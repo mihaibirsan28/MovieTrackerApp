@@ -14,7 +14,7 @@ from email_sender import send_account_confirmation_email
 
 from hashlib import md5
 from enums import LinkType
-from request_models import CreateUserRequest
+from request_models import CreateUserRequest, LoginRequest
 from response_models import AuthToken
 
 from validations import validate_create_user_request
@@ -49,7 +49,7 @@ async def register_user(
 
 
 @router.post("/login", status_code=status.HTTP_200_OK, response_model=AuthToken)
-async def login(form_data: OAuth2PasswordRequestForm = Depends(),
+async def login(form_data: LoginRequest,
                 db: Session = Depends(deps.get_db)):
     user: User = login_user(form_data.username, form_data.password, db)
     if not user:
