@@ -69,6 +69,36 @@ async def get_movie_by_id(movie_id: str):
         }
 
 
+@router.get("/random-movies")
+async def get_random_movies(
+        startYear: int = Query(None, description="Start year"),
+        genre: str = Query(None, description="movie genres"),
+        titleType: str = Query(None, description="Type of movie: series or movie"),
+        limit: int = Query(10, description="Number of random movies, max 10"),
+        endYear: int = Query(None, description="Max release year"),
+        year: int = Query(None, description="Release year of movie"),
+        listOfMovies: str = Query("most_pop_series", description="Where to get random movies from")):
+    headers = get_headers()
+    query_params = {
+        "genre": genre,
+        "year": year,
+        "endYear": endYear,
+        "startYear": startYear,
+        "titleType": titleType,
+        "limit": limit,
+        "list": listOfMovies
+    }
+    external_api_url = f"https://{X_RAPID_API_HOST}/titles/random"
+    external_api_response = requests.get(external_api_url, headers=headers, params=query_params)
+    if external_api_response.status_code == 200:
+        external_api_response_data = external_api_response.json()
+        return external_api_response_data
+    else:
+        return {
+            "message": "There was an error fetching the movies"
+        }
+
+
 def get_headers():
     headers = {
         "X-RapidAPI-Host": X_RAPID_API_HOST,
