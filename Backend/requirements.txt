@@ -65,7 +65,6 @@ python-dotenv==1.0.0
 python-jose==3.3.0
 python-multipart==0.0.6
 pytz==2022.1
-pywin32==303
 pyzmq==22.3.0
 requests==2.28.1
 rsa==4.9
