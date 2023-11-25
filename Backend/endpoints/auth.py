@@ -14,7 +14,7 @@ from email_sender import send_account_confirmation_email
 
 from hashlib import md5
 from enums import LinkType
-from request_models import CreateUserRequest
+from request_models import CreateUserRequest, LoginRequest
 from response_models import AuthToken
 
 from validations import validate_create_user_request
