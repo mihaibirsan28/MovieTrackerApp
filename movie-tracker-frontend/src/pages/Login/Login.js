@@ -24,15 +24,20 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch(properties.BACKEND_HOST + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData,
-      });
+      const response = await axios.post(
+        `${properties.BACKEND_HOST}/login`,
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+        { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+      );
       sessionStorage.setItem("accessToken", response.data.access_token);
       navigate("/movies");
       window.location.reload();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

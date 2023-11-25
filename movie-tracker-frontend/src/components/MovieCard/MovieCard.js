@@ -9,9 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleInfo,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import AddToLibraryButton from "../AddToLibraryButton/AddToLibraryButton";
 import AddToWishlistButton from "../AddToWishlistButton/AddToWishlistButton";
 
@@ -30,7 +28,7 @@ const style = {
   pb: 3,
 };
 
-const MovieCard = ({ id, title, imageUrl, releaseYear }) => {
+const MovieCard = ({ id, title, imageUrl, releaseYear, pageType }) => {
   const [openInfos, setOpenInfos] = React.useState(false);
   const handleOpenInfos = () => {
     setOpenInfos(true);
@@ -42,13 +40,14 @@ const MovieCard = ({ id, title, imageUrl, releaseYear }) => {
   return (
     <Card>
       <CardMedia component="img" alt={title} height="300" image={imageUrl} />
+
       <CardContent>
         <Typography variant="subtitle1" component="div">
           <strong>{title}</strong>&nbsp;•&nbsp;{releaseYear}
         </Typography>
         <div style={{ display: "flex" }}>
-          <AddToLibraryButton movieId={id}/>
-          <AddToWishlistButton movieId={id}/>
+          {pageType !== "wishlist" && <AddToWishlistButton movieId={id} />}
+          <AddToLibraryButton movieId={id} />
           <Button variant="contained" onClick={handleOpenInfos}>
             <FontAwesomeIcon icon={faCircleInfo} />
           </Button>
@@ -63,7 +62,13 @@ const MovieCard = ({ id, title, imageUrl, releaseYear }) => {
                 component="img"
                 alt={title}
                 height="100%"
-                style={{ objectFit: "contain", margin: 0, position: "absolute", top: 0, right: "-230px"}}
+                style={{
+                  objectFit: "contain",
+                  margin: 0,
+                  position: "absolute",
+                  top: 0,
+                  right: "-230px",
+                }}
                 image={imageUrl}
               />
               <div style={{ flex: 1 }}>
@@ -73,13 +78,23 @@ const MovieCard = ({ id, title, imageUrl, releaseYear }) => {
                 <Typography variant="body2" color="text.secondary">
                   {releaseYear}
                 </Typography>
-                <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
+                <div
+                  style={{ position: "absolute", bottom: "20px", left: "20px" }}
+                >
                   <div style={{ flex: 1, marginBottom: "10px" }}>
-                    <AddToLibraryButton movieId={id} style={{width: "100%"}}/>
+                    <AddToLibraryButton
+                      movieId={id}
+                      style={{ width: "100%" }}
+                    />
                   </div>
-                  <div style={{ flex: 1 }}>
-                  <AddToWishlistButton movieId={id} style={{width: "100%"}}/>
-                  </div>
+                  {pageType !== "wishlist" && (
+                    <div style={{ flex: 1 }}>
+                      <AddToWishlistButton
+                        movieId={id}
+                        style={{ width: "100%" }}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </Box>
