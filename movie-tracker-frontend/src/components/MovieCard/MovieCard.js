@@ -36,7 +36,7 @@ const MovieCard = ({ id, title, imageUrl, releaseYear, pageType }) => {
   const handleCloseInfos = () => {
     setOpenInfos(false);
   };
-
+  console.log(id);
   return (
     <Card>
       <CardMedia component="img" alt={title} height="300" image={imageUrl} />
