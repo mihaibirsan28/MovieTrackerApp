@@ -15,6 +15,8 @@ class MockRequest:
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+
+
 class TestUserValidationFunctions(unittest.TestCase):
 
     def test_validate_minimum_length(self):
@@ -60,6 +62,7 @@ class TestUserValidationFunctions(unittest.TestCase):
         self.assertIn("First name should only contain letters", errors)
         self.assertIn("Last name should only contain letters", errors)
         self.assertIn("Invalid email format", errors)
+
 
 if __name__ == '__main__':
     unittest.main()

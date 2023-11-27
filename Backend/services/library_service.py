@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 from models import Library, User
 
+
 class LibraryService:
     def __init__(self, db: Session):
         self.db = db

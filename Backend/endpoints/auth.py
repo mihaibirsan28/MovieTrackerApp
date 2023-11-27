@@ -155,7 +155,7 @@ def generate_account_confirmation_link(user: User, db: Session = Depends(deps.ge
                 user=user)
     db.add(link)
     db.commit()
-    return f'{HOST}/auth/confirm/{link_token}'
+    return f'{HOST}/confirm/{link_token}'
 
 
 def generate_link_token(user: User):

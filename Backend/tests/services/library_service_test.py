@@ -7,6 +7,7 @@ from fastapi import HTTPException
 from services.library_service import LibraryService
 from models import Library, User
 
+
 class TestLibraryService:
     def setup_method(self):
         self.db_mock = MagicMock(spec=Session)
