@@ -1,33 +1,41 @@
 import re
 
-from request_models import CreateUserRequest
+def validate_minimum_length(field, field_name, min_length=3):
+    if len(field) < min_length:
+        return "{} should have a minimum length of {}".format(field_name, min_length)
+    return None
 
+def validate_passwords_match(password, confirm_password):
+    if password != confirm_password:
+        return "Passwords do not match"
+    return None
 
-def validate_create_user_request(request: CreateUserRequest):
+def validate_email_format(email):
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return "Invalid email format"
+    return None
+
+def validate_name_contains_only_letters(name, field_name):
+    if not name.isalpha():
+        return "{} should only contain letters".format(field_name)
+    return None
+
+def validate_create_user_request(request):
     errors = []
+    validations = [
+        validate_minimum_length(request.username, "Username"),
+        validate_minimum_length(request.password, "Password"),
+        validate_minimum_length(request.first_name, "First name"),
+        validate_minimum_length(request.last_name, "Last name"),
+        validate_passwords_match(request.password, request.confirm_password),
+        validate_email_format(request.email),
+        validate_name_contains_only_letters(request.first_name, "First name"),
+        validate_name_contains_only_letters(request.last_name, "Last name")
+    ]
 
-    # Minimum length check for all fields
-    min_length = 3  # Define your minimum length
-    if len(request.username) < min_length:
-        errors.append("Username should have a minimum length of {}".format(min_length))
-    if len(request.password) < min_length:
-        errors.append("Password should have a minimum length of {}".format(min_length))
-    if len(request.first_name) < min_length:
-        errors.append("First name should have a minimum length of {}".format(min_length))
-    if len(request.last_name) < min_length:
-        errors.append("Last name should have a minimum length of {}".format(min_length))
+    # Aggregate errors
+    for validation in validations:
+        if validation:
+            errors.append(validation)
 
-    # Passwords match check
-    if request.password != request.confirm_password:
-        errors.append("Passwords do not match")
-
-    # Email validation
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", request.email):
-        errors.append("Invalid email format")
-
-    # Names only contain letters check
-    if not request.first_name.isalpha():
-        errors.append("First name should only contain letters")
-    if not request.last_name.isalpha():
-        errors.append("Last name should only contain letters")
     return errors
