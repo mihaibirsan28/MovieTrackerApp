@@ -11,6 +11,7 @@ function MovieGrid({ movieList, pageType }) {
         {movieList.map((movie) => (
           <Grid key={movie.id} item xs={12} sm={6} md={4} lg={3}>
             <MovieCard
+              id={movie.id}
               title={movie.titleText.text}
               imageUrl={
                 movie.primaryImage?.url || "https://iili.io/JumfmqQ.jpg"
