@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import movieData from '../../response.json'
-import MovieGrid from '../../components/MovieGrid/MovieGrid';
+import React, { useEffect, useState } from "react";
+import movieData from "../../response.json";
+import MovieGrid from "../../components/MovieGrid/MovieGrid";
+import axios from "axios";
+import { properties } from "../../properties";
 
 function MyWishlist() {
-    const [movies, setMovies] = useState([]);
-    const [page, setPage] = useState(1);
+  const [movies, setMovies] = useState([]);
 
-    const fetchMovies = async () => {
-        // const response = await fetch();
-        // const data = await response.json();
-        const data = movieData.results;
-        setMovies((prevMovies) => [...prevMovies, ...data]);
-      };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          `${properties.BACKEND_HOST}/my-wishlist`,
+          { headers: { Authorization: `Bearer ${sessionStorage.accessToken}` } }
+        );
 
-      useEffect(() => {
-        fetchMovies();
-      }, [page]);
+        setMovies(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, []);
 
-    return (
-        <>
-          <MovieGrid movieList={movies} />
-        </>
-    )
+  return (
+    <>
+      <MovieGrid movieList={movies} pageType="wishlist" />
+    </>
+  );
 }
 
 export default MyWishlist;

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Grid, Typography } from '@mui/material';
+import { properties } from '../../properties';
 import './Register.css'
 import axios from 'axios';
 
 function Register() {
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         email: '',
+        username: '',
         password: '',
-        confirmPassword: ''
+        confirm_password: ''
       });
     
       const handleChange = (e) => {
@@ -23,10 +25,10 @@ function Register() {
         e.preventDefault();
         
         try {
-          const response = await axios.post('YOUR_API_ENDPOINT', formData);
+          const response = await axios.post(properties.BACKEND_HOST + "/register", formData);
           console.log('Response from the server:', response.data);
         } catch (error) {
-          console.error('Error sending the form:', error);
+          
         }
       };
     
@@ -42,8 +44,8 @@ function Register() {
                     required
                     fullWidth
                     label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
+                    name="first_name"
+                    value={formData.first_name}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -53,8 +55,8 @@ function Register() {
                     required
                     fullWidth
                     label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
+                    name="last_name"
+                    value={formData.last_name}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -67,6 +69,18 @@ function Register() {
                     name="email"
                     type="email"
                     value={formData.email}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Username"
+                    name="username"
+                    type="username"
+                    value={formData.username}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -88,9 +102,9 @@ function Register() {
                     required
                     fullWidth
                     label="Confirm Password"
-                    name="confirmPassword"
+                    name="confirm_password"
                     type="password"
-                    value={formData.confirmPassword}
+                    value={formData.confirm_password}
                     onChange={handleChange}
                   />
                 </Grid>

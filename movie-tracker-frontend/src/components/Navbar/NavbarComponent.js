@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 function NavbarComponent() {
+  const [isLogged, setIsLogged] = useState(false);
+
+  const checkIfLogged = () => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (accessToken) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  };
+
+  const logout = () => {
+    sessionStorage.removeItem("accessToken");
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    checkIfLogged();
+  }, []);
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -26,9 +46,17 @@ function NavbarComponent() {
           </Nav>
           <Nav className="ml-auto">
             {" "}
-            <Nav.Link href="/register">Register</Nav.Link>
-            <Nav.Link href="/login">Log In</Nav.Link>
-            <Nav.Link href="#link">Logout</Nav.Link>
+            {!isLogged && (
+              <>
+                <Nav.Link href="/register">Register</Nav.Link>
+                <Nav.Link href="/login">Log In</Nav.Link>
+              </>
+            )}
+            {isLogged && (
+              <Button variant="contained" color="warning" onClick={logout}>
+                Logout
+              </Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
