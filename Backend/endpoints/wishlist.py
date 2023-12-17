@@ -1,88 +1,34 @@
-from typing import List
-
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.exc import IntegrityError
+# wishlist_routes.py
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 import database.deps as deps
-from models import Wishlist, User
-from endpoints.auth import get_current_user, get_forbidden_exception
-from utils.movie_utils import load_wish_list
+from models import User
+from endpoints.auth import get_current_user
+from services.wishlist_service import WishlistService
 
 router = APIRouter()
 
-
 @router.post("/wishlist/{imdb_movie_id}")
-def create_wishlist_item(
-        imdb_movie_id: str,
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(get_current_user)):
-    try:
-        wishlist = Wishlist(user_id=current_user.id, imdb_movie_id=imdb_movie_id)
-        db.add(wishlist)
-        db.commit()
-        db.refresh(wishlist)
-        return wishlist
-    except IntegrityError:
-        raise HTTPException(status_code=400, detail="Duplicate wishlist item")
-
+def create_wishlist_item(imdb_movie_id: str, db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
+    service = WishlistService(db)
+    return service.create_wishlist_item(current_user.id, imdb_movie_id)
 
 @router.get("/wishlist/{wishlist_id}")
-def read_wishlist_item(
-        wishlist_id: int,
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(get_current_user)):
-    wishlist_item = db.query(Wishlist).filter(Wishlist.id == wishlist_id).first()
-    if wishlist_item is None:
-        raise HTTPException(status_code=404, detail="Wishlist item not found")
-    check_if_user_has_rights(user=current_user, wishlist=wishlist_item)
-    return wishlist_item
-
+def read_wishlist_item(wishlist_id: int, db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
+    service = WishlistService(db)
+    return service.get_wishlist_item(wishlist_id, current_user.id)
 
 @router.patch("/wishlist/{wishlist_id}/{imdb_movie_id}")
-def update_wishlist_item(
-        wishlist_id: int,
-        imdb_movie_id: str,
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(get_current_user)):
-    wishlist_item = db.query(Wishlist).filter(Wishlist.id == wishlist_id).first()
-    if wishlist_item is None:
-        raise HTTPException(status_code=404, detail="Wishlist item not found")
-    check_if_user_has_rights(user=current_user, wishlist=wishlist_item)
-    if imdb_movie_id is not None:
-        wishlist_item.imdb_movie_id = imdb_movie_id
-
-    db.commit()
-    db.refresh(wishlist_item)
-    return wishlist_item
-
+def update_wishlist_item(wishlist_id: int, imdb_movie_id: str, db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
+    service = WishlistService(db)
+    return service.update_wishlist_item(wishlist_id, current_user.id, imdb_movie_id)
 
 @router.delete("/wishlist/{wishlist_id}")
-def delete_wishlist_item(
-        wishlist_id: int,
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(get_current_user)):
-    wishlist_item = db.query(Wishlist).filter(Wishlist.id == wishlist_id).first()
-    if wishlist_item is None:
-        raise HTTPException(status_code=404, detail="Wishlist item not found")
-    check_if_user_has_rights(user=current_user, wishlist=wishlist_item)
-    db.delete(wishlist_item)
-    db.commit()
-    return wishlist_item
-
+def delete_wishlist_item(wishlist_id: int, db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
+    service = WishlistService(db)
+    return service.delete_wishlist_item(wishlist_id, current_user.id)
 
 @router.get("/my-wishlist")
-def get_all_wishlists(
-        db: Session = Depends(deps.get_db),
-        current_user: User = Depends(get_current_user)):
-    wishlists = db.query(Wishlist).filter(Wishlist.user_id == current_user.id).all()
-    user_wishlist = load_wish_list(movie_list=wishlists)
-    return user_wishlist
-
-
-def is_owner_of_wishlist(user: User, wishlist: Wishlist):
-    return wishlist.user_id == user.id
-
-
-def check_if_user_has_rights(user: User, wishlist: Wishlist):
-    if not is_owner_of_wishlist(user, wishlist):
-        raise get_forbidden_exception()
+def get_all_wishlists(db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
+    service = WishlistService(db)
+    return service.get_all_wishlists(current_user.id)
