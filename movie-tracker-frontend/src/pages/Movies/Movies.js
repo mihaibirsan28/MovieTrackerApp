@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import movieData from '../../response.json'
+import './Movies.css'
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
 
-function MyMovies() {
+function Movies() {
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
 
@@ -17,11 +18,11 @@ function MyMovies() {
         fetchMovies();
       }, [page]);
 
-    return (
+      return (
         <>
           <MovieGrid movieList={movies} />
         </>
-    )
+      );
 }
 
-export default MyMovies;
+export default Movies;

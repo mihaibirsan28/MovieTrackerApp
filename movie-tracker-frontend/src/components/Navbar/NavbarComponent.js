@@ -13,8 +13,9 @@ function NavbarComponent() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/home">Home</Nav.Link>
+            <Nav.Link href="/movies">Movies</Nav.Link>
             <Nav.Link href="/myMovies">My Movies</Nav.Link>
-            <Nav.Link href="#link">My Wishlist</Nav.Link>
+            <Nav.Link href="/myWishlist">My Wishlist</Nav.Link>
             <Nav.Link href="#link">Friends</Nav.Link>
             <TextField
               id="outlined-search"

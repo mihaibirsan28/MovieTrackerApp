@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import movieData from '../../response.json'
 import MovieGrid from '../../components/MovieGrid/MovieGrid';
 
-function MyMovies() {
+function MyWishlist() {
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
 
@@ -24,4 +24,4 @@ function MyMovies() {
     )
 }
 
-export default MyMovies;
+export default MyWishlist;
