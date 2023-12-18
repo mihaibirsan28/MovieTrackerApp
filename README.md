@@ -60,3 +60,60 @@
 ![](./Diagrams/cinemate_component_diagram.png)
 
 
+## Class diagram
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+classDiagram
+    class Movie {
+        -String id
+        +Enum genre
+        +Int releaseYear
+        +String imageUrl
+        +String title
+        +String[] Actors
+    }
+    class Review {
+        -String id
+        -String userId
+        -String movieId
+        +Int rating[1..10]
+        +String reviewText
+    }
+  class Wishlist{
+    -Int id
+    -Movie movies[]
+    +addMovie()
+    +removeMovie()
+}
+class Library{
+    -Int id
+    -Movie movies[]
+    +addMovie()
+    +removeMovie()
+    }
+class User{
+    -String id
+    -String username
+    -String password
+    +Wishlist wishlist
+    +Library library
+    +login()
+    +shareLibrary()
+    +changePassword(newPassword)
+    -sendConfirmationEmail()
+    -getRecommendation()
+    +addReview(movieId, rating, message)
+}
+
+
+
+
+Wishlist <-- Movie : contains
+Library <-- Movie : contains
+User *-- Wishlist : has
+User *-- Library : has
+Review o-- User : give
+Review o-- Movie : to
+```
+
+
