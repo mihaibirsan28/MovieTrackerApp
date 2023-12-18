@@ -116,4 +116,33 @@ Review o-- User : give
 Review o-- Movie : to
 ```
 
+## Diagrama de interactiune
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant Backend
+    participant Database
+    participant PublicAPI
+
+    Frontend ->> Backend: Request for Movie List
+    activate Backend
+    Backend ->> PublicAPI: Fetch Movie List
+    activate PublicAPI
+    PublicAPI -->> Backend: Movie List
+    deactivate PublicAPI
+    Backend -->> Frontend: Movie List Response
+    deactivate Backend
+
+    activate Frontend
+    Frontend -->> Backend: Add movie to wishlist
+    activate Backend
+    Backend ->> Database: Store Wishlist
+    activate Database
+    Backend ->> Database: <<add>>
+    Database -->> Backend: New wishlist returned
+    deactivate Database
+    Backend -->> Frontend: Wishlist Response
+    deactivate Backend
+
+```
 
