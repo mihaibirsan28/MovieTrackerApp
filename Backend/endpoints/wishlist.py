@@ -5,6 +5,7 @@ import database.deps as deps
 from models import User
 from endpoints.auth import get_current_user
 from services.wishlist_service import WishlistService
+from utils.movie_utils import load_wish_list
 
 router = APIRouter()
 
@@ -36,4 +37,5 @@ def delete_wishlist_item(wishlist_id: int, db: Session = Depends(deps.get_db), c
 @router.get("/my-wishlist")
 def get_all_wishlists(db: Session = Depends(deps.get_db), current_user: User = Depends(get_current_user)):
     service = WishlistService(db)
-    return service.get_all_wishlists(current_user.id)
+    wish_list_items = service.get_all_wishlists(current_user.id)
+    return load_wish_list(movie_list=wish_list_items)
