@@ -1,6 +1,5 @@
 # Movie Tracker App: **"Cinemate"**
 
-## Course: Managmentul si organizarea proiectelor software
 
 # Cinemate
 
@@ -55,5 +54,9 @@
 ## Use case Diagram
 
 ![](./Diagrams/use_case.png)
+
+## Component Diagram
+
+![](./Diagrams/cinemate_component_diagram.png)
 
 
