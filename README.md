@@ -59,6 +59,8 @@
 
 ![](./Diagrams/cinemate_component_diagram.png)
 
+![](./Diagrams/AMSS-components-diagram.jpg)
+
 
 ## Class diagram
 ```mermaid
