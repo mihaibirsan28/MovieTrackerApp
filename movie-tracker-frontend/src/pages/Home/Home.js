@@ -1,93 +1,109 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Box from '@mui/material/Box';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
+import React, { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Box from "@mui/material/Box";
+import { Button, TextField, Typography } from "@mui/material";
+import axios from "axios";
+import { properties } from "../../properties";
+import MovieGrid from "../../components/MovieGrid/MovieGrid";
 
 function Home() {
-    return (
-      <>
-      <Box sx={{ width: 1430, height: 750, overflowY: 'scroll' }}>
-        <ImageList variant="masonry" cols={3} gap={8}>
-          {itemData.map((item) => (
-            <ImageListItem key={item.img}>
-              <img
-                srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                src={`${item.img}?w=248&fit=crop&auto=format`}
-                alt={item.title}
-                loading="lazy"
-              />
-              <ImageListItemBar position="below" title={item.author} />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      </Box>
-      </>
-    );
-  }
+  const [movies, setMovies] = useState([]);
+  const [movieTitle, setMovieTitle] = useState("");
+  const [page, setPage] = useState(1);
 
-  const itemData = [
-    {
-      img: 'https://images.unsplash.com/photo-1549388604-817d15aa0110',
-      title: 'Bed',
-      author: 'swabdesign',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1525097487452-6278ff080c31',
-      title: 'Books',
-      author: 'Pavel Nekoranec',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6',
-      title: 'Sink',
-      author: 'Charles Deluvio',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3',
-      title: 'Kitchen',
-      author: 'Christian Mackie',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1588436706487-9d55d73a39e3',
-      title: 'Blinds',
-      author: 'Darren Richardson',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1574180045827-681f8a1a9622',
-      title: 'Chairs',
-      author: 'Taylor Simpson',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1530731141654-5993c3016c77',
-      title: 'Laptop',
-      author: 'Ben Kolde',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61',
-      title: 'Doors',
-      author: 'Philipp Berndt',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7',
-      title: 'Coffee',
-      author: 'Jen P.',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee',
-      title: 'Storage',
-      author: 'Douglas Sheppard',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62',
-      title: 'Candle',
-      author: 'Fi Bell',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4',
-      title: 'Coffee table',
-      author: 'Hutomo Abrianto',
-    },
-  ];
-  
-  export default Home;
+  const searchMovie = async () => {
+    if (movieTitle !== "")
+      try {
+        const response = await axios.get(
+          `${properties.BACKEND_HOST}/search/${movieTitle}?page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.accessToken}`,
+            },
+          }
+        );
+        console.log(response);
+        setMovies(response.data.results);
+      } catch (error) {
+        console.log(error);
+      }
+  };
+
+  useEffect(() => {
+    searchMovie();
+  }, [page]);
+  return (
+    <>
+      {sessionStorage.accessToken ? (
+        <>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              value={movieTitle}
+              size="small"
+              sx={{ width: "40%", marginTop: "50px" }}
+              onChange={(e) => {
+                setMovieTitle(e.target.value);
+              }}
+              placeholder="Movie Title"
+            />
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={() => {
+                searchMovie();
+                setPage(1);
+              }}
+              sx={{ marginTop: "20px" }}
+            >
+              Search
+            </Button>
+          </Box>
+          <MovieGrid movieList={movies} />
+
+          {movies.length !== 0 && (
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: "30px",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="warning"
+                onClick={() => setPage((page) => page + 1)}
+                sx={{ cursor: "pointer" }}
+              >
+                Next Page
+              </Button>
+            </Box>
+          )}
+        </>
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            height: "600px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="subtitle1" component="div">
+            Please log in/register to be able to see your library.
+          </Typography>
+        </Box>
+      )}
+    </>
+  );
+}
+
+export default Home;

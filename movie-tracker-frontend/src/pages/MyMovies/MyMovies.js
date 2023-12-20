@@ -1,27 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import movieData from '../../response.json'
-import MovieGrid from '../../components/MovieGrid/MovieGrid';
+import React, { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
+import axios from "axios";
+import { properties } from "../../properties";
+import MovieGrid from "../../components/MovieGrid/MovieGrid";
 
 function MyMovies() {
-    const [movies, setMovies] = useState([]);
-    const [page, setPage] = useState(1);
+  const [movies, setMovies] = useState([]);
 
-    const fetchMovies = async () => {
-        // const response = await fetch();
-        // const data = await response.json();
-        const data = movieData.results;
-        setMovies((prevMovies) => [...prevMovies, ...data]);
-      };
+  useEffect(() => {
+    async function fetchData() {
+      if (sessionStorage.accessToken)
+        try {
+          const response = await axios.get(
+            `${properties.BACKEND_HOST}/my-library`,
+            {
+              headers: {
+                Authorization: `Bearer ${sessionStorage.accessToken}`,
+              },
+            }
+          );
 
-      useEffect(() => {
-        fetchMovies();
-      }, [page]);
+          setMovies(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+    }
+    fetchData();
+  }, []);
 
-    return (
-        <>
-          <MovieGrid movieList={movies} />
-        </>
-    )
+  return (
+    <>
+      {sessionStorage.accessToken ? (
+        <MovieGrid movieList={movies} />
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            height: "600px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="subtitle1" component="div">
+            Please log in/register to be able to see your library.
+          </Typography>
+        </Box>
+      )}
+    </>
+  );
 }
 
 export default MyMovies;

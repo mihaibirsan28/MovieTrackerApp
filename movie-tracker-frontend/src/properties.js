@@ -1,3 +1,3 @@
 export const properties = {
-    BACKEND_HOST: "http://18.197.69.100"
-}
+  BACKEND_HOST: "http://3.121.76.214",
+};

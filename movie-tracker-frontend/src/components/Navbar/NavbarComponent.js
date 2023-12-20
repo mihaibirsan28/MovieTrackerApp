@@ -37,12 +37,6 @@ function NavbarComponent() {
             <Nav.Link href="/myMovies">My Movies</Nav.Link>
             <Nav.Link href="/myWishlist">My Wishlist</Nav.Link>
             <Nav.Link href="#link">Friends</Nav.Link>
-            <TextField
-              id="outlined-search"
-              label="Search..."
-              type="search"
-              size="small"
-            />
           </Nav>
           <Nav className="ml-auto">
             {" "}

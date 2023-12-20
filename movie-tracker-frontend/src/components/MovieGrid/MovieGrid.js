@@ -1,7 +1,6 @@
 import { Container, Grid } from "@mui/material";
 import MovieCard from "../../components/MovieCard/MovieCard";
-import React, { useEffect, useState } from "react";
-import movieData from "../../response.json";
+import React from "react";
 import "./MovieGrid.css";
 
 function MovieGrid({ movieList, pageType }) {
@@ -16,7 +15,7 @@ function MovieGrid({ movieList, pageType }) {
               imageUrl={
                 movie.primaryImage?.url || "https://iili.io/JumfmqQ.jpg"
               }
-              releaseYear={movie.releaseYear.year}
+              releaseYear={movie.releaseYear?.year || "Not defined"}
               pageType={pageType}
             />
           </Grid>
