@@ -200,3 +200,7 @@ async def search_movie_title(
         limit: int = Query(10, description="Number of results per page")
 ):
 ```
+
+## 3. MVC
+Am structurat aplicatia conform design pattern-ului Model View Controller, in endpoints, service & model:
+![](./Diagrams/layout.png)
