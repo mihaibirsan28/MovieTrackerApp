@@ -148,6 +148,34 @@ sequenceDiagram
 
 ```
 
+## Diagrama de interactiune - Register/Login
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant Backend
+    participant Database
+    participant Email
+
+    Frontend ->> Backend: Request for registering the new user
+    activate Backend
+    Backend ->> Email: Sending an email to the user
+    activate Email
+    Email ->> Backend: Accepting the invitation
+    deactivate Email
+    Backend ->> Database: Save user in DB
+    Backend ->> Frontend: User account created
+    deactivate Backend
+
+    Frontend ->> Backend: Request for login the user
+    activate Backend
+    Backend ->> Database: Request the user in db
+    activate Database
+    Database ->> Backend: Accept/Deny user login
+    deactivate Database
+    Backend ->> Frontend: Login accepted or failed
+    deactivate Backend
+```
+
 ## Diagrame de pachete
 
 ### Backend
