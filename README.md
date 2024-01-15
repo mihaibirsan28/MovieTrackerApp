@@ -148,3 +148,11 @@ sequenceDiagram
 
 ```
 
+## Diagrame de pachete
+
+### Backend
+![](./Diagrams/BackendPackageDiagram.png)
+
+### Frontend
+
+![](./Diagrams/FrontendPackageDiagram.png)
